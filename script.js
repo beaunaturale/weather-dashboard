@@ -9,7 +9,7 @@ function getApi() {
   // var queryUrl = "api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={0ec00862a300db548b59bba29a37fead}"
   var cityValue = inputCity.value;
 
-  var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + inputCity + '&appid=' + APIKey
+  var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
 
   fetch(geoUrl)
     .then(function (response) {
