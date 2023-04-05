@@ -2,10 +2,13 @@ var APIKey = "0ec00862a300db548b59bba29a37fead";
 
 var cityFormEl = $('#city-form')
 var cityListEl = $('#city-list')
+var searchBtnEl = $('#searchBtn')
 var inputCity = document.querySelector("input");
 
 function getApi() {
   // var queryUrl = "api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={0ec00862a300db548b59bba29a37fead}"
+  var cityValue = inputCity.value;
+
   var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + inputCity + '&appid=' + APIKey
 
   fetch(geoUrl)
@@ -58,7 +61,7 @@ function handleFormSubmit(event) {
 
 
 // on click - run this function
-cityFormEl.click(handleFormSubmit)
+searchBtnEl.click(handleFormSubmit)
 
 
 
