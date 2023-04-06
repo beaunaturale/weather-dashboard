@@ -6,7 +6,7 @@ var searchBtnEl = $('#searchBtn')
 var inputCity = document.querySelector("input");
 
 function getApi() {
-  // var queryUrl = "api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={0ec00862a300db548b59bba29a37fead}"
+  // var newGeoUrl = "api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={0ec00862a300db548b59bba29a37fead}"
   var cityValue = inputCity.value;
 
   var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
@@ -25,7 +25,17 @@ function getApi() {
       // extracting the data you want
       // using that data to make a new url(5day forecast)
       // making another api call
-    var queryUrl = 'api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey
+    var newGeoUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey
+
+    fetch(newGeoUrl)
+      .then(function (response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(function(newGeoResults) {
+        console.log(newGeoResults);
+
+      }) 
       // -- then
       // -- extract that new data
       // -- shove it on the screen
