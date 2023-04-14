@@ -5,15 +5,15 @@ var cityListEl = $('#city-list')
 var searchBtnEl = $('#searchBtn')
 var inputCity = document.querySelector("input");
 var currentCard = document.querySelector("#current-weather");
+var dayOneCard = document.querySelector('#day1')
+var dayTwoCard = document.querySelector('#day2')
+var dayThreeCard = document.querySelector('#day3')
+var dayFourCard = document.querySelector('#day4')
+var dayFiveCard = document.querySelector('#day5')
 
 
-// var listedCity = function() {
-//   console.log("saved cities list")
-//   localStorage.setItem('city', JSON.stringify(city))
-// }
 
 function getApi() {
-  // var newWeatherURL = "api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={0ec00862a300db548b59bba29a37fead}"
   var cityValue = inputCity.value;
 
   var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
@@ -48,8 +48,8 @@ function getApi() {
         var currentTime = new Date(currentDay.dt * 1000).toLocaleDateString()
         var currentTemp = Math.floor((parseInt(currentDay.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
         var currentWind = currentDay.wind.speed
-        var currentHum = currentDay.main.humidity
-        console.log(currentTime, currentTemp, currentWind, currentHum)
+        var currentHumidity = currentDay.main.humidity
+        console.log(currentTime, currentTemp, currentWind, currentHumidity)
         
         //This is creating the current day card element
         var currentTimeEl = document.createElement("p")
@@ -64,21 +64,53 @@ function getApi() {
         currentWindEl.textContent = ""
         currentWindEl.textContent = `Current Wind: ${currentWind}`
         
-        var currentHumEl = document.createElement("p")
-        currentHumEl.textContent = ""
-        currentHumEl.textContent = `Current Humidity : ${currentHum}`
+        var currentHumidityEl = document.createElement("p")
+        currentHumidityEl.textContent = ""
+        currentHumidityEl.textContent = `Current Humidity : ${currentHumidity}`
 
         currentCard.append(currentTimeEl)
         currentCard.append(currentTempEl)
         currentCard.append(currentWindEl)
-        currentCard.append(currentHumEl)
+        currentCard.append(currentHumidityEl)
 
         console.log(currentCard)
 
-
-
-
         //TODO: CREATE elements for 5 day forecast 
+
+        currentCard.innerHTML = ""
+        //this is the data for the current day 
+        var dayOne  = newWeatherResults.list[1]
+        var dayOneTemp = Math.floor((parseInt(dayOne.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
+        var dayOneWind = dayOne.wind.speed
+        var dayOneHumid = dayOne.main.humidity
+        console.log(dayOneTemp, dayOneWind, dayOneHumid)
+        
+        //This is creating the day one card element
+        // var dayOneEL = document.createElement("p")
+        // dayOneEL.textContent = ""
+        // dayOneEL.textContent = `Current Day : ${currentTime}`
+        
+        var dayOneTempEL = document.createElement("p")
+        dayOneTempEL.textContent = ""
+        dayOneTempEL.textContent = `Temperature : ${dayOneTemp}`
+        
+        var dayOneWindEl = document.createElement("p")
+        dayOneWindEl.textContent = ""
+        dayOneWindEl.textContent = `Wind: ${dayOneWind}`
+        
+        var dayOneHumidEl = document.createElement("p")
+        dayOneHumidEl.textContent = ""
+        dayOneHumidEl.textContent = `Humidity : ${dayOneHumid}`
+
+        // currentCard.append(currentTimeEl)
+        dayOneCard.append(dayOneTempEl)
+        dayOneCard.append(dayOneWindEl)
+        dayOneCard.append(dayOneHumidEl)
+
+        console.log(dayOneCard)
+
+
+
         //console.log(new Date(currentTime * 1000).toLocaleDateString())
         // -- then
         // -- extract that new data
