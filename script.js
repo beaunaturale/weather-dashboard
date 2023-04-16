@@ -1,5 +1,5 @@
 var APIKey = "0ec00862a300db548b59bba29a37fead";
-var city = []
+var cityArr = JSON.parse(localStorage.getItem('cityArr')) || []
 var cityFormEl = $('#city-form')
 var cityListEl = $('#city-list')
 var searchBtnEl = $('#searchBtn')
@@ -10,11 +10,12 @@ var dayTwoCard = document.querySelector('#day2')
 var dayThreeCard = document.querySelector('#day3')
 var dayFourCard = document.querySelector('#day4')
 var dayFiveCard = document.querySelector('#day5')
+// var iconUrl = "http://openweathermap.org/img/w" + iconcode + ".png";
 
 
 
-function getApi() {
-  var cityValue = inputCity.value;
+function getApi(cityValue) {
+  // var cityValue = inputCity.value;
 
   var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
 
@@ -37,12 +38,16 @@ function getApi() {
     })
     .then(function(newWeatherResults) {
       console.log(newWeatherResults);
-
+      var cityName = newWeatherResults.city.name
+      if (!cityArr.includes(cityName)) {
+        cityArr.push(cityName)
+        localStorage.setItem('cityArr', JSON.stringify(cityArr))
+      }
       
         currentCard.innerHTML = ""
         var currentDay  = newWeatherResults.list[0]
         var currentTime = new Date(currentDay.dt * 1000).toLocaleDateString()
-        var currentIcon = currentDay.weather[0]
+        var currentIcon = currentDay.weather[0].icon
         var currentTemp = Math.floor((parseInt(currentDay.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
         var currentWind = currentDay.wind.speed + ' mph'
         var currentHumidity = currentDay.main.humidity + '%'
@@ -50,9 +55,11 @@ function getApi() {
 
         var currentTimeEl = document.createElement("p")
         currentTimeEl.textContent = ""
-        currentTimeEl.textContent = `Current Day : ${currentTime}`
+        currentTimeEl.textContent = `${cityValue} : ${currentTime}`
 
-        var currentIconEl = document.createElement("p")
+        var currentIconEl = document.createElement("img")
+        currentIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + currentIcon + ".png")
+        currentIconEl.setAttribute("width", "50px")
         currentIconEl.textContent = ""
         currentIconEl.textContent = `Current Icon : ${currentIcon}`
         
@@ -80,7 +87,7 @@ function getApi() {
 
         dayOneCard.innerHTML = ""
         var dayOne  = newWeatherResults.list[1]
-        var dayOneDate = new Date(currentDay.dt * 1000).toLocaleDateString()
+        var dayOneDate = new Date(dayOne.dt * 1000).toLocaleDateString()
         var dayOneTemp = Math.floor((parseInt(dayOne.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
         var dayOneWind = dayOne.wind.speed
         var dayOneHumid = dayOne.main.humidity
@@ -88,7 +95,7 @@ function getApi() {
 
         var dayOneDateEl = document.createElement("p")
         dayOneDateEl.textContent = ""
-        dayOneDateEl.textContent = `Date : ${dayOneDate}`
+        dayOneDateEl.textContent = `${dayOneDate}`
                 
         var dayOneTempEl = document.createElement("p")
         dayOneTempEl.textContent = ""
@@ -221,17 +228,19 @@ function getApi() {
 // localStorage to keep persistent data
 function handleFormSubmit(event) {
   event.preventDefault();
+  cityListEl.empty()
+  createBtn()
+  console.log(event.target.value)
   // reach int the html and grab the el w/ the city input id
   var cityInputEl = $('#city-input');
   // extract its value
-  var cityInputVal = cityInputEl.val();
-
+  var cityInputVal = event.target.value || cityInputEl.val(); 
   // add a new li to the cityListEl ul list el
-  cityListEl.append(`<li>${cityInputVal}</li>`);
-
-  getApi()
-
-
+  // cityListEl.append(`<li>${cityInputVal}</li>`);
+  
+  
+  getApi(cityInputVal)
+  
   // clear the input box
   cityInputEl.val('');
 
@@ -240,10 +249,15 @@ function handleFormSubmit(event) {
 // on click - run this function
 searchBtnEl.click(handleFormSubmit)
 
-localStorage.setItem(cityListEl, inputCity)
+// localStorage.setItem(cityListEl, inputCity)
 
-let cityList = localStorage.getItem(inputCity)
+// let cityList = localStorage.getItem(inputCity)
+function createBtn() {
 
-
-
+  for (var i = 0; i < cityArr.length; i++) {
+    var btn = $('<button>').text(cityArr[i]).val(cityArr[i]).click(handleFormSubmit)
+    cityListEl.append(btn)
+}
+}
+createBtn() 
 
