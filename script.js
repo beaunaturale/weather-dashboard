@@ -1,39 +1,34 @@
 var APIKey = "0ec00862a300db548b59bba29a37fead";
 var cityArr = JSON.parse(localStorage.getItem('cityArr')) || []
-var cityFormEl = $('#city-form')
+var cityName = []
 var cityListEl = $('#city-list')
 var searchBtnEl = $('#searchBtn')
-var inputCity = document.querySelector("input");
+// var inputCity = document.querySelector("input");
 var currentCard = document.querySelector("#current-weather");
 var dayOneCard = document.querySelector('#day1')
 var dayTwoCard = document.querySelector('#day2')
 var dayThreeCard = document.querySelector('#day3')
 var dayFourCard = document.querySelector('#day4')
 var dayFiveCard = document.querySelector('#day5')
-// var iconUrl = "http://openweathermap.org/img/w" + iconcode + ".png";
-
 
 
 function getApi(cityValue) {
-  // var cityValue = inputCity.value;
 
   var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
 
   fetch(geoUrl)
     .then(function (response) {
-      console.log(response);
       return response.json();
     })
     .then(function(geoResults) {
-      console.log(geoResults);
 
     let latitude = geoResults[0].lat;
     let longitude = geoResults[0].lon;
+
     var newWeatherURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey
     
     fetch(newWeatherURL)
     .then(function (response) {
-      console.log(response);
       return response.json();
     })
     .then(function(newWeatherResults) {
@@ -46,60 +41,68 @@ function getApi(cityValue) {
       
         currentCard.innerHTML = ""
         var currentDay  = newWeatherResults.list[0]
-        var currentTime = new Date(currentDay.dt * 1000).toLocaleDateString()
+        var currentDate = new Date(currentDay.dt * 1000).toLocaleDateString()
         var currentIcon = currentDay.weather[0].icon
-        var currentTemp = Math.floor((parseInt(currentDay.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var currentWind = currentDay.wind.speed + ' mph'
-        var currentHumidity = currentDay.main.humidity + '%'
-        console.log(currentTime, currentIcon, currentTemp, currentWind, currentHumidity)
+        var currentTemp = Math.floor((parseInt(currentDay.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var currentWind = currentDay.wind.speed + ' MPH'
+        var currentHumidity = currentDay.main.humidity + ' %'
 
-        var currentTimeEl = document.createElement("p")
-        currentTimeEl.textContent = ""
-        currentTimeEl.textContent = `${cityValue} : ${currentTime}`
+        var currentCityEl = document.createElement("h1")
+        currentCityEl.textContent = ""
+        currentCityEl.textContent = `${cityName}`
+
+        var currentDateEl = document.createElement("h5")
+        currentDateEl.textContent = ""
+        currentDateEl.textContent = `${currentDate}`
 
         var currentIconEl = document.createElement("img")
         currentIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + currentIcon + ".png")
         currentIconEl.setAttribute("width", "50px")
         currentIconEl.textContent = ""
-        currentIconEl.textContent = `Current Icon : ${currentIcon}`
+        currentIconEl.textContent = `${currentIcon}`
         
         var currentTempEl = document.createElement("p")
         currentTempEl.textContent = ""
-        currentTempEl.textContent = `Current Temperature : ${currentTemp}`
+        currentTempEl.textContent = `Temperature: ${currentTemp}`
         
         var currentWindEl = document.createElement("p")
         currentWindEl.textContent = ""
-        currentWindEl.textContent = `Current Wind: ${currentWind}`
+        currentWindEl.textContent = `Wind: ${currentWind}`
         
         var currentHumidityEl = document.createElement("p")
         currentHumidityEl.textContent = ""
-        currentHumidityEl.textContent = `Current Humidity : ${currentHumidity}`
+        currentHumidityEl.textContent = `Humidity: ${currentHumidity}`
 
-        currentCard.append(currentTimeEl)
+        currentCard.append(currentCityEl)
+        currentCard.append(currentDateEl)
         currentCard.append(currentIconEl)
         currentCard.append(currentTempEl)
         currentCard.append(currentWindEl)
         currentCard.append(currentHumidityEl)
 
-        console.log(currentCard)
-
-        //TODO: CREATE elements for 5 day forecast 
 
         dayOneCard.innerHTML = ""
-        var dayOne  = newWeatherResults.list[1]
+        var dayOne  = newWeatherResults.list[8]
         var dayOneDate = new Date(dayOne.dt * 1000).toLocaleDateString()
-        var dayOneTemp = Math.floor((parseInt(dayOne.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var dayOneWind = dayOne.wind.speed
-        var dayOneHumid = dayOne.main.humidity
+        var dayOneIcon = dayOne.weather[0].icon
+        var dayOneTemp = Math.floor((parseInt(dayOne.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var dayOneWind = dayOne.wind.speed + ' MPH'
+        var dayOneHumid = dayOne.main.humidity + ' %'
         console.log(dayOneDate, dayOneTemp, dayOneWind, dayOneHumid)
 
-        var dayOneDateEl = document.createElement("p")
+        var dayOneDateEl = document.createElement("h5")
         dayOneDateEl.textContent = ""
         dayOneDateEl.textContent = `${dayOneDate}`
+
+        var dayOneIconEl = document.createElement("img")
+        dayOneIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayOneIcon + ".png")
+        dayOneIconEl.setAttribute("width", "50px")
+        dayOneIconEl.textContent = ""
+        dayOneIconEl.textContent = `${dayOneIcon}`
                 
         var dayOneTempEl = document.createElement("p")
         dayOneTempEl.textContent = ""
-        dayOneTempEl.textContent = `Temperature : ${dayOneTemp}`
+        dayOneTempEl.textContent = `Temperature: ${dayOneTemp}`
         
         var dayOneWindEl = document.createElement("p")
         dayOneWindEl.textContent = ""
@@ -107,26 +110,37 @@ function getApi(cityValue) {
         
         var dayOneHumidEl = document.createElement("p")
         dayOneHumidEl.textContent = ""
-        dayOneHumidEl.textContent = `Humidity : ${dayOneHumid}`
+        dayOneHumidEl.textContent = `Humidity: ${dayOneHumid}`
 
         dayOneCard.append(dayOneDateEl)
+        dayOneCard.append(dayOneIconEl)
         dayOneCard.append(dayOneTempEl)
         dayOneCard.append(dayOneWindEl)
         dayOneCard.append(dayOneHumidEl)
 
-        console.log(dayOneCard)
-
 
         dayTwoCard.innerHTML = ""
-        var dayTwo  = newWeatherResults.list[2]
-        var dayTwoTemp = Math.floor((parseInt(dayOne.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var dayTwoWind = dayTwo.wind.speed
-        var dayTwoHumid = dayTwo.main.humidity
-        console.log(dayTwoTemp, dayTwoWind, dayTwoHumid)
+        var dayTwo  = newWeatherResults.list[16]
+        var dayTwoDate = new Date(dayTwo.dt * 1000).toLocaleDateString()
+        var dayTwoIcon = dayTwo.weather[0].icon
+        var dayTwoTemp = Math.floor((parseInt(dayTwo.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var dayTwoWind = dayTwo.wind.speed + ' MPH'
+        var dayTwoHumid = dayTwo.main.humidity + ' %'
+        console.log(dayTwoDate, dayTwoTemp, dayTwoWind, dayTwoHumid)
+
+        var dayTwoDateEl = document.createElement("h5")
+        dayTwoDateEl.textContent = ""
+        dayTwoDateEl.textContent = `${dayTwoDate}`
+
+        var dayTwoIconEl = document.createElement("img")
+        dayTwoIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayTwoIcon + ".png")
+        dayTwoIconEl.setAttribute("width", "50px")
+        dayTwoIconEl.textContent = ""
+        dayTwoIconEl.textContent = `${dayTwoIcon}`
                 
         var dayTwoTempEl = document.createElement("p")
         dayTwoTempEl.textContent = ""
-        dayTwoTempEl.textContent = `Temperature : ${dayTwoTemp}`
+        dayTwoTempEl.textContent = `Temperature: ${dayTwoTemp}`
         
         var dayTwoWindEl = document.createElement("p")
         dayTwoWindEl.textContent = ""
@@ -134,25 +148,37 @@ function getApi(cityValue) {
         
         var dayTwoHumidEl = document.createElement("p")
         dayTwoHumidEl.textContent = ""
-        dayTwoHumidEl.textContent = `Humidity : ${dayTwoHumid}`
+        dayTwoHumidEl.textContent = `Humidity: ${dayTwoHumid}`
 
+        dayTwoCard.append(dayTwoDateEl)
+        dayTwoCard.append(dayTwoIconEl)
         dayTwoCard.append(dayTwoTempEl)
         dayTwoCard.append(dayTwoWindEl)
         dayTwoCard.append(dayTwoHumidEl)
 
-        console.log(dayTwoCard)
-
-
+        
         dayThreeCard.innerHTML = ""
-        var dayThree  = newWeatherResults.list[3]
-        var dayThreeTemp = Math.floor((parseInt(dayThree.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var dayThreeWind = dayThree.wind.speed
-        var dayThreeHumid = dayThree.main.humidity
-        console.log(dayThreeTemp, dayThreeWind, dayThreeHumid)
+        var dayThree  = newWeatherResults.list[24]
+        var dayThreeDate = new Date(dayThree.dt * 1000).toLocaleDateString()
+        var dayThreeIcon = dayThree.weather[0].icon
+        var dayThreeTemp = Math.floor((parseInt(dayThree.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var dayThreeWind = dayThree.wind.speed + ' MPH'
+        var dayThreeHumid = dayThree.main.humidity + ' %'
+        console.log(dayThreeDate, dayThreeTemp, dayThreeWind, dayThreeHumid)
+
+        var dayThreeDateEl = document.createElement("h5")
+        dayThreeDateEl.textContent = ""
+        dayThreeDateEl.textContent = `${dayThreeDate}`
+
+        var dayThreeIconEl = document.createElement("img")
+        dayThreeIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayThreeIcon + ".png")
+        dayThreeIconEl.setAttribute("width", "50px")
+        dayThreeIconEl.textContent = ""
+        dayThreeIconEl.textContent = `${dayThreeIcon}`
                 
         var dayThreeTempEl = document.createElement("p")
         dayThreeTempEl.textContent = ""
-        dayThreeTempEl.textContent = `Temperature : ${dayThreeTemp}`
+        dayThreeTempEl.textContent = `Temperature: ${dayThreeTemp}`
         
         var dayThreeWindEl = document.createElement("p")
         dayThreeWindEl.textContent = ""
@@ -160,25 +186,37 @@ function getApi(cityValue) {
         
         var dayThreeHumidEl = document.createElement("p")
         dayThreeHumidEl.textContent = ""
-        dayThreeHumidEl.textContent = `Humidity : ${dayThreeHumid}`
+        dayThreeHumidEl.textContent = `Humidity: ${dayThreeHumid}`
 
+        dayThreeCard.append(dayThreeDateEl)
+        dayThreeCard.append(dayThreeIconEl)
         dayThreeCard.append(dayThreeTempEl)
         dayThreeCard.append(dayThreeWindEl)
         dayThreeCard.append(dayThreeHumidEl)
 
-        console.log(dayThreeCard)
-
-
+        
         dayFourCard.innerHTML = ""
-        var dayFour  = newWeatherResults.list[4]
-        var dayFourTemp = Math.floor((parseInt(dayFour.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var dayFourWind = dayFour.wind.speed
-        var dayFourHumid = dayFour.main.humidity
-        console.log(dayFourTemp, dayFourWind, dayFourHumid)
-                
+        var dayFour  = newWeatherResults.list[32]
+        var dayFourDate = new Date(dayFour.dt * 1000).toLocaleDateString()
+        var dayFourIcon = dayFour.weather[0].icon
+        var dayFourTemp = Math.floor((parseInt(dayFour.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var dayFourWind = dayFour.wind.speed + ' MPH'
+        var dayFourHumid = dayFour.main.humidity + ' %'
+        console.log(dayFourDate, dayFourTemp, dayFourWind, dayFourHumid)
+        
+        var dayFourDateEl = document.createElement("h5")
+        dayFourDateEl.textContent = ""
+        dayFourDateEl.textContent = `${dayFourDate}`
+        
+        var dayFourIconEl = document.createElement("img")
+        dayFourIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayFourIcon + ".png")
+        dayFourIconEl.setAttribute("width", "50px")
+        dayFourIconEl.textContent = ""
+        dayFourIconEl.textContent = `${dayFourIcon}`
+        
         var dayFourTempEl = document.createElement("p")
         dayFourTempEl.textContent = ""
-        dayFourTempEl.textContent = `Temperature : ${dayFourTemp}`
+        dayFourTempEl.textContent = `Temperature: ${dayFourTemp}`
         
         var dayFourWindEl = document.createElement("p")
         dayFourWindEl.textContent = ""
@@ -186,25 +224,36 @@ function getApi(cityValue) {
         
         var dayFourHumidEl = document.createElement("p")
         dayFourHumidEl.textContent = ""
-        dayFourHumidEl.textContent = `Humidity : ${dayFourHumid}`
-
+        dayFourHumidEl.textContent = `Humidity: ${dayFourHumid}`
+        
+        dayFourCard.append(dayFourDateEl)
+        dayFourCard.append(dayFourIconEl)
         dayFourCard.append(dayFourTempEl)
         dayFourCard.append(dayFourWindEl)
         dayFourCard.append(dayFourHumidEl)
 
-        console.log(dayFourCard)
-
-
+        
         dayFiveCard.innerHTML = ""
-        var dayFive  = newWeatherResults.list[5]
-        var dayFiveTemp = Math.floor((parseInt(dayFive.main.temp) - 273.15) * 9 / 5 + 32) + 'F'
-        var dayFiveWind = dayFive.wind.speed
-        var dayFiveHumid = dayFive.main.humidity
-        console.log(dayFiveTemp, dayFiveWind, dayFiveHumid)
+        var dayFive  = newWeatherResults.list[39]
+        var dayFiveDate = new Date(dayFive.dt * 1000).toLocaleDateString()
+        var dayFiveIcon = dayFive.weather[0].icon
+        var dayFiveTemp = Math.floor((parseInt(dayFive.main.temp) - 273.15) * 9 / 5 + 32) + '° F'
+        var dayFiveWind = dayFive.wind.speed + ' MPH'
+        var dayFiveHumid = dayFive.main.humidity + ' %'
+
+        var dayFiveDateEl = document.createElement("h5")
+        dayFiveDateEl.textContent = ""
+        dayFiveDateEl.textContent = `${dayFiveDate}`
+
+        var dayFiveIconEl = document.createElement("img")
+        dayFiveIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayFiveIcon + ".png")
+        dayFiveIconEl.setAttribute("width", "50px")
+        dayFiveIconEl.textContent = ""
+        dayFiveIconEl.textContent = `${dayFiveIcon}`
                 
         var dayFiveTempEl = document.createElement("p")
         dayFiveTempEl.textContent = ""
-        dayFiveTempEl.textContent = `Temperature : ${dayFiveTemp}`
+        dayFiveTempEl.textContent = `Temperature: ${dayFiveTemp}`
         
         var dayFiveWindEl = document.createElement("p")
         dayFiveWindEl.textContent = ""
@@ -212,52 +261,41 @@ function getApi(cityValue) {
         
         var dayFiveHumidEl = document.createElement("p")
         dayFiveHumidEl.textContent = ""
-        dayFiveHumidEl.textContent = `Humidity : ${dayFiveHumid}`
+        dayFiveHumidEl.textContent = `Humidity: ${dayFiveHumid}`
 
+        dayFiveCard.append(dayFiveDateEl)
+        dayFiveCard.append(dayFiveIconEl)
         dayFiveCard.append(dayFiveTempEl)
         dayFiveCard.append(dayFiveWindEl)
         dayFiveCard.append(dayFiveHumidEl)
 
-        console.log(dayFiveCard)
-
       }) 
     })
-
 }
 
-// localStorage to keep persistent data
 function handleFormSubmit(event) {
   event.preventDefault();
   cityListEl.empty()
   createBtn()
-  console.log(event.target.value)
-  // reach int the html and grab the el w/ the city input id
   var cityInputEl = $('#city-input');
-  // extract its value
   var cityInputVal = event.target.value || cityInputEl.val(); 
-  // add a new li to the cityListEl ul list el
-  // cityListEl.append(`<li>${cityInputVal}</li>`);
-  
   
   getApi(cityInputVal)
   
-  // clear the input box
   cityInputEl.val('');
-
+  
 };
 
-// on click - run this function
-searchBtnEl.click(handleFormSubmit)
-
-// localStorage.setItem(cityListEl, inputCity)
-
-// let cityList = localStorage.getItem(inputCity)
 function createBtn() {
 
   for (var i = 0; i < cityArr.length; i++) {
     var btn = $('<button>').text(cityArr[i]).val(cityArr[i]).click(handleFormSubmit)
     cityListEl.append(btn)
+    cityArr.push(cityName)
 }
 }
+
+searchBtnEl.click(handleFormSubmit)
+
 createBtn() 
 
