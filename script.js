@@ -3,7 +3,6 @@ var cityArr = JSON.parse(localStorage.getItem('cityArr')) || []
 var cityName = []
 var cityListEl = $('#city-list')
 var searchBtnEl = $('#searchBtn')
-// var inputCity = document.querySelector("input");
 var currentCard = document.querySelector("#current-weather");
 var dayOneCard = document.querySelector('#day1')
 var dayTwoCard = document.querySelector('#day2')
@@ -291,7 +290,6 @@ function createBtn() {
   for (var i = 0; i < cityArr.length; i++) {
     var btn = $('<button>').text(cityArr[i]).val(cityArr[i]).click(handleFormSubmit)
     cityListEl.append(btn)
-    cityArr.push(cityName)
 }
 }
 
