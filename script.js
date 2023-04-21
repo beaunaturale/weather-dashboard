@@ -13,7 +13,7 @@ var dayFiveCard = document.querySelector('#day5')
 
 function getApi(cityValue) {
 
-  var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
+  var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityValue + '&appid=' + APIKey
 
   fetch(geoUrl)
     .then(function (response) {
@@ -24,7 +24,7 @@ function getApi(cityValue) {
     let latitude = geoResults[0].lat;
     let longitude = geoResults[0].lon;
 
-    var newWeatherURL = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey
+    var newWeatherURL = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + latitude + '&lon=' + longitude + '&appid=' + APIKey
     
     fetch(newWeatherURL)
     .then(function (response) {
@@ -55,7 +55,7 @@ function getApi(cityValue) {
         currentDateEl.textContent = `${currentDate}`
 
         var currentIconEl = document.createElement("img")
-        currentIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + currentIcon + ".png")
+        currentIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + currentIcon + ".png")
         currentIconEl.setAttribute("width", "50px")
         currentIconEl.textContent = ""
         currentIconEl.textContent = `${currentIcon}`
@@ -94,7 +94,7 @@ function getApi(cityValue) {
         dayOneDateEl.textContent = `${dayOneDate}`
 
         var dayOneIconEl = document.createElement("img")
-        dayOneIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayOneIcon + ".png")
+        dayOneIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + dayOneIcon + ".png")
         dayOneIconEl.setAttribute("width", "50px")
         dayOneIconEl.textContent = ""
         dayOneIconEl.textContent = `${dayOneIcon}`
@@ -132,7 +132,7 @@ function getApi(cityValue) {
         dayTwoDateEl.textContent = `${dayTwoDate}`
 
         var dayTwoIconEl = document.createElement("img")
-        dayTwoIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayTwoIcon + ".png")
+        dayTwoIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + dayTwoIcon + ".png")
         dayTwoIconEl.setAttribute("width", "50px")
         dayTwoIconEl.textContent = ""
         dayTwoIconEl.textContent = `${dayTwoIcon}`
@@ -170,7 +170,7 @@ function getApi(cityValue) {
         dayThreeDateEl.textContent = `${dayThreeDate}`
 
         var dayThreeIconEl = document.createElement("img")
-        dayThreeIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayThreeIcon + ".png")
+        dayThreeIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + dayThreeIcon + ".png")
         dayThreeIconEl.setAttribute("width", "50px")
         dayThreeIconEl.textContent = ""
         dayThreeIconEl.textContent = `${dayThreeIcon}`
@@ -208,7 +208,7 @@ function getApi(cityValue) {
         dayFourDateEl.textContent = `${dayFourDate}`
         
         var dayFourIconEl = document.createElement("img")
-        dayFourIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayFourIcon + ".png")
+        dayFourIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + dayFourIcon + ".png")
         dayFourIconEl.setAttribute("width", "50px")
         dayFourIconEl.textContent = ""
         dayFourIconEl.textContent = `${dayFourIcon}`
@@ -245,7 +245,7 @@ function getApi(cityValue) {
         dayFiveDateEl.textContent = `${dayFiveDate}`
 
         var dayFiveIconEl = document.createElement("img")
-        dayFiveIconEl.setAttribute("src", "http://openweathermap.org/img/w/" + dayFiveIcon + ".png")
+        dayFiveIconEl.setAttribute("src", "https://openweathermap.org/img/w/" + dayFiveIcon + ".png")
         dayFiveIconEl.setAttribute("width", "50px")
         dayFiveIconEl.textContent = ""
         dayFiveIconEl.textContent = `${dayFiveIcon}`
